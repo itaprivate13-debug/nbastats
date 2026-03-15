@@ -1,0 +1,75 @@
+@page "/player/{Id:int}"
+@using Project.Data
+@using System.Diagnostics.Eventing.Reader
+@inject UserService UserService
+@rendermode InteractiveServer
+
+<div class="player-page">
+
+    <div class="player-header">
+        <img src="@Player[0].ImageUrl" />
+
+        <div class="player-text">
+            <h1> @Player[0].Name </h1>
+
+            <p> @Teams[Player[0].TeamId].Name </p>
+            <p> @Player[0].Position </p>
+        </div>
+
+        <img src="@Teams[Player[0].TeamId].LogoUrl" />
+    </div>
+
+    <div class="player-stats">
+        <p> Points Per Game: @Player[0].PPG </p>
+        <p> Asists Per Game: @Player[0].APG </p>
+        <p> Rebounds Per Game: @Player[0].RPG </p>
+    </div>
+
+</div>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    List<Player> Player = new List<Player>();
+    List<Teams> Teams = new List<Teams>();
+
+    protected override void OnInitialized()
+    {
+        Player = UserService.GetPlayerById(Id);
+        Teams = UserService.GetAllTeams();
+    }
+}
+
+<style>
+    .player-header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .player-img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .player-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .team-logo {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+    }
+
+    .position {
+        font-size: 16px;
+        color: #666;
+    }
+</style>

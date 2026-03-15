@@ -4,19 +4,9 @@ namespace Project.Data
 {
     public class UserService
     {
-        public List<Player> GetPlayer(string name)
+        public List<Player> GetAllPlayers()
         {
-            string sql = "SELECT * FROM Players WHERE Name = {};";
-
-            return DbHelper.RunSelect<Player>(sql, name);
-        }
-
-        public List<Player> GetFeaturedPlayers()
-        {
-            string sql = $@"SELECT Players.Id, Players.TeamId, Players.Name, Players.PPG, Players.APG, Players.RPG, Players.ImageUrl, Teams.TeamName
-                           FROM Players
-                           JOIN Teams ON Players.TeamId = Teams.Id
-                           WHERE Players.Name IN ('Deni Avdija', 'LeBron James', 'Stephen Curry', 'Luka Dončić');";
+            string sql = "SELECT * FROM Players;";
 
             return DbHelper.RunSelect<Player>(sql);
         }
@@ -28,21 +18,47 @@ namespace Project.Data
             return DbHelper.RunSelect<Teams>(sql);
         }
 
+        public List<Player> GetPlayer(string name)
+        {
+            string sql = "SELECT * FROM Players WHERE Name = {};";
+
+            return DbHelper.RunSelect<Player>(sql, name);
+        }
+
+        public List<Player> GetPlayerById(int id)
+        {             
+            string sql = "SELECT * FROM Players WHERE Id = {};";
+
+            return DbHelper.RunSelect<Player>(sql, id);
+        }
+    
+        public List<Teams> GetTeamById(int id)
+        {
+            string sql = "SELECT * FROM Teams WHERE Id = {};";
+            return DbHelper.RunSelect<Teams>(sql, id);
+        }
+
+        public List<Player> GetFeaturedPlayers()
+        {
+            string sql = $@"SELECT Players.Id, Players.TeamId, Players.Name, Players.PPG, Players.APG, Players.RPG, Players.ImageUrl, Teams.TeamName
+                           FROM Players
+                           JOIN Teams ON Players.TeamId = Teams.Id
+                           WHERE Players.Name IN ('Deni Avdija', 'LeBron James', 'Stephen Curry', 'Luka Dončić');";
+
+            return DbHelper.RunSelect<Player>(sql);
+        }
         public bool IsPlayer(string search)
         {
-            string sql = "SELECT * FROM Players WHERE Name = {}";
+            string sql = "SELECT * FROM Players WHERE Name LIKE {};";
 
-            if (DbHelper.RunSelect<Player>(sql, search).Count > 0)
-                return true;
-            
-            return false;
+            return DbHelper.RunSelect<Player>(sql, $"%{search}%").Count > 0;
         }
 
         public List<Search> Search(string search)
         {
-            string sql = @"SELECT Id, Name, ImageUrl FROM Players WHERE Name LIKE {}
+            string sql = @"SELECT Id, Name, ImageUrl, 1 as IsPlayer FROM Players WHERE Name LIKE {}
                         UNION 
-                        SELECT Id, TeamName, LogoUrl FROM Teams WHERE TeamName LIKE {};";
+                        SELECT Id, TeamName, LogoUrl, 0 as IsPlayer FROM Teams WHERE TeamName LIKE {};";
 
             string str = $"%{search}%";
 

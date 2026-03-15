@@ -10,5 +10,6 @@
         public double RPG { get; set; }
         public string ImageUrl { get; set; }
         public string TeamName { get; set; }
+        public string Position { get; set; }
     }
 }

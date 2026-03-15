@@ -25,7 +25,7 @@
                 @for (int i = 0; i < result.Count; i++)
                 {
 
-                    @if (IsPlayer)
+                    @if (result[i].IsPlayer)
                     {
                         <a href="player/@result[i].Id">
                             <div class="search-item">
@@ -57,7 +57,7 @@
         {
             <div class="search-dropdown">
 
-                <div class="search-iteam">
+                <div class="error">
                     <p style="color: red;"> No Player / Team Found </p>
                 </div>
 
@@ -151,7 +151,6 @@
 
 @code {
     private string search = "";
-    private bool IsPlayer;
 
     private List<Player> players = new List<Player>();
     private List<Teams> teams = new List<Teams>();
@@ -168,7 +167,6 @@
 
     void DoSearch()
     {
-        IsPlayer = UserService.IsPlayer(search);
         result = UserService.Search(search);
 
         Console.WriteLine($"Search for '{search}' returned {result.Count} results");
