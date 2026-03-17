@@ -1,0 +1,75 @@
+@page "/teams"
+@using Project.Data
+@using System.Diagnostics.Eventing.Reader
+@inject UserService UserService
+
+<h1> All NBA Teams: </h1>
+
+<hr />
+
+<div class="teams-container">
+
+    @for (int i = 0; i < teams.Count; i++)
+    {
+        <div class="team-card">
+            <img src="@teams[i].LogoUrl" />
+            <p> @teams[i].TeamName </p>
+        </div>
+    }
+
+</div>
+
+@code {
+    private List<Teams> teams = new List<Teams>();
+
+    protected override void OnInitialized()
+    {
+        teams = UserService.GetAllTeams();
+    }
+}
+
+<style>
+    .teams-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        /* fit as many as possible per row */
+        gap: 10px;
+        width: 100%;
+        max-width: 1200px;
+        /* optional: limits total width */
+        margin: 0 auto;
+        /* center on page */
+        padding: 10px;
+    }
+
+    .team-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #e3e3e3;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 5px;
+        text-align: center;
+    }
+
+    .team-card img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        margin-bottom: 5px;
+    }
+
+    .team-card p {
+        font-size: 10px;
+        /* small but readable */
+        margin: 0;
+    }
+
+    .team {
+        font-size: 18px;
+        color: #444;
+        margin-top: 8px;
+    }
+</style>

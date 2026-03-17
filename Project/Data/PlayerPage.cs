@@ -2,6 +2,7 @@ namespace Project.Data
 {
     public class PlayerPage
     {
+        public int Id { get; set; }
         public int TeamId { get; set; }
         public string Name { get; set; }
         public string Position { get; set; }

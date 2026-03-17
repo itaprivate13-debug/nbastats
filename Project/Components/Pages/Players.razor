@@ -1,139 +1,85 @@
-@page "/player/{Id:int}"
+@page "/players"
 @using Project.Data
 @using System.Diagnostics.Eventing.Reader
 @inject UserService UserService
 
+<h1> All NBA Players: </h1>
 
-@if (Player != null && Player.Count > 0)
-{
-    <div class="player-page">
-        <div class="player-header">
+<hr />
 
-            <img class="player-photo" src="@Player[0].ImageUrl" />
+<div class="players-container">
 
-            <div class="player-text">
-                <h1> @Player[0].Name </h1>
+    @for (int i = 0; i < players.Count; i++)
+    {
+        <div class="player-card">
 
-                <p> @Player[0].Name </p>
-                <p> @Player[0].Position </p>
+            <div class="player-header">
+                <img src="@players[i].ImageUrl" class="player-img">
+
+                <div class="player-text">
+                    <h2>@players[i].Name</h2>
+                    <p class="team">@players[i].TeamName</p>
+                </div>
             </div>
 
-            <img class="team-photo" src="@Player[0].LogoUrl" />
+            <div class="player-stats">
+                <p>Points Per Game: @players[i].PPG</p>
+                <p>Assist Per Game: @players[i].APG</p>
+                <p>Rebounds Per Game: @players[i].RPG</p>
+            </div>
 
         </div>
-
-        <div class="player-stats">
-
-            <p> Points Per Game: @Player[0].PPG </p>
-            <p> Asists Per Game: @Player[0].APG </p>
-            <p> Rebounds Per Game: @Player[0].RPG </p>
-
-        </div>
-
-        <div class="player-info">
-
-            <p> Height: @Player[0].Height </p>
-            <p> Weight: @Player[0].Weight </p>
-            <p> Draft Year: @Player[0].DraftYear </p>
-            <p> Draft Pick: @Player[0].DraftPick </p>
-
-        </div>
-    </div>
-}
+    }
+</div>
 
 @code {
-    [Parameter]
-    public int Id { get; set; }
-
-    List<PlayerPage> Player = new List<PlayerPage>();
+    private List<Player> players = new List<Player>();
 
     protected override void OnInitialized()
     {
-        Player = UserService.GetPlayerPageById(Id);
+        players = UserService.GetAllPlayers();
     }
 }
 
 <style>
-    .player-page {
-        max-width: 900px;
-        margin: 40px auto;
-        padding: 25px;
-        background: #f5f5f5;
-        border: 2px solid black;
-        box-sizing: border-box;
-    }
-
-    /* --- Header --- */
-    .player-header {
+    .players-container {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 30px;
+        flex-wrap: wrap;
+        /* allows multiple rows if needed */
+        gap: 20px;
+        /* spacing between cards */
+        justify-content: center;
+        /* center the row of cards */
     }
 
-    /* Player picture (left) */
-    .player-photo {
-        width: 130px;
-        height: 130px;
-        object-fit: cover;
-        border-radius: 10px;
-    }
-
-    /* Name and position (center) */
-    .player-text {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 6px;
-        flex: 1;
-        text-align: center;
-    }
-
-    .player-text h1 {
-        font-size: 36px;
+    .player-card {
+        width: 300px;
+        /* smaller width */
+        background: #e3e3e3;
+        border: 3px solid black;
+        padding: 15px;
+        /* smaller padding */
         margin: 0;
     }
 
-    .player-text .position {
-        font-size: 18px;
-        color: #666;
-        font-weight: 500;
+    .player-img {
+        width: 120px;
+        /* smaller image to fit card */
     }
 
-    /* Team logo (right) */
-    .team-photo {
-        width: 90px;
-        height: 90px;
-        object-fit: contain;
-    }
-
-    /* --- Stats Section --- */
-    .player-stats {
-        display: flex;
-        justify-content: space-around;
-        padding: 20px;
-        background: white;
-        border: 2px solid black;
-        margin-bottom: 20px;
+    .player-text h2 {
+        font-size: 28px;
+        /* smaller title */
     }
 
     .player-stats p {
         font-size: 20px;
-        font-weight: bold;
-        margin: 0;
+        /* smaller stats text */
     }
 
-    /* --- Info Section --- */
-    .player-info {
+    .player-header {
         display: flex;
-        justify-content: space-around;
-        padding: 20px;
-        background: white;
-        border: 2px solid black;
-    }
-
-    .player-info p {
-        font-size: 18px;
-        margin: 0;
+        align-items: center;
+        gap: 25px;
     }
 </style>

@@ -1,0 +1,218 @@
+@page "/player/{Id:int}"
+@using Project.Data
+@using System.Diagnostics.Eventing.Reader
+@inject UserService UserService
+
+
+@if (Player != null && Player.Count > 0)
+{
+    <div class="player-page">
+        <div class="player-header">
+
+            <img class="player-photo" src="@Player[0].ImageUrl" />
+
+            <div class="player-text">
+                <h1> @Player[0].Name </h1>
+
+                <p> @Player[0].Name </p>
+                <p> @Player[0].Position </p>
+            </div>
+
+            <img class="team-photo" src="@Player[0].LogoUrl" />
+
+        </div>
+
+        <div class="player-stats">
+
+            <p> Points Per Game: @Player[0].PPG </p>
+            <p> Asists Per Game: @Player[0].APG </p>
+            <p> Rebounds Per Game: @Player[0].RPG </p>
+
+        </div>
+
+        <div class="player-info">
+
+            <p> Height: @Player[0].Height </p>
+            <p> Weight: @Player[0].Weight </p>
+            <p> Draft Year: @Player[0].DraftYear </p>
+            <p> Draft Pick: @Player[0].DraftPick </p>
+
+        </div>
+    </div>
+}
+
+<h1 style="color:white;"> space space </h1>
+
+@if (teamMates != null && teamMates.Count > 0)
+{
+    <h1> @Player[0].Name Teammates: </h1>
+    <div class="players-container">
+
+    @foreach (var players in teamMates)
+    {
+        <div class="player-card">
+
+            <div class="player-head">
+                <img src="@players.ImageUrl" class="player-img">
+
+                <div class="player-txt">
+                    <h2>@players.Name</h2>
+                    <p class="team">@players.TeamName</p>
+                </div>
+            </div>
+
+            <div class="player-stat">
+                <p>Points Per Game: @players.PPG</p>
+                <p>Assist Per Game: @players.APG</p>
+                <p>Rebounds Per Game: @players.RPG</p>
+            </div>
+
+        </div>
+    }
+
+</div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private List<Data.PlayerPage> Player = new List<Data.PlayerPage>();
+    private List<Player> teamMates = new List<Player>();  
+
+    protected override void OnInitialized()
+    {
+        Player = UserService.GetPlayerPageById(Id);
+        teamMates = UserService.GetTeamMates(Player[0].TeamId, Id);
+    }
+}
+
+<style>
+    .player-page {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 25px;
+        background: #f5f5f5;
+        border: 2px solid black;
+        box-sizing: border-box;
+    }
+
+    /* --- Header --- */
+    .player-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+
+    /* Player picture (left) */
+    .player-photo {
+        width: 130px;
+        height: 130px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    /* Name and position (center) */
+    .player-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        flex: 1;
+        text-align: center;
+    }
+
+    .player-text h1 {
+        font-size: 36px;
+        margin: 0;
+    }
+
+    .player-text .position {
+        font-size: 18px;
+        color: #666;
+        font-weight: 500;
+    }
+
+    /* Team logo (right) */
+    .team-photo {
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+    }
+
+    /* --- Stats Section --- */
+    .player-stats {
+        display: flex;
+        justify-content: space-around;
+        padding: 20px;
+        background: white;
+        border: 2px solid black;
+        margin-bottom: 20px;
+    }
+
+    .player-stats p {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    /* --- Info Section --- */
+    .player-info {
+        display: flex;
+        justify-content: space-around;
+        padding: 20px;
+        background: white;
+        border: 2px solid black;
+    }
+
+    .player-info p {
+        font-size: 18px;
+        margin: 0;
+    }
+    
+
+
+
+
+    .players-container {
+        display: flex;
+        flex-wrap: wrap;
+        /* allows multiple rows if needed */
+        gap: 20px;
+        /* spacing between cards */
+        justify-content: center;
+        /* center the row of cards */
+    }
+
+    .player-card {
+        width: 300px;
+        /* smaller width */
+        background: #e3e3e3;
+        border: 3px solid black;
+        padding: 15px;
+        /* smaller padding */
+        margin: 0;
+    }
+
+    .player-img {
+        width: 120px;
+        /* smaller image to fit card */
+    }
+
+    .player-txt h2 {
+        font-size: 28px;
+        /* smaller title */
+    }
+
+    .player-stat p {
+        font-size: 20px;
+        /* smaller stats text */
+    }
+
+    .player-head {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+    }
+</style>

@@ -34,7 +34,6 @@
 
         </div>
     }
-
 </div>
 
 <h1 style="color: white;"> space space </h1>
@@ -49,7 +48,7 @@
     {
         <div class="team-card">
             <img src="@teams[i].LogoUrl" />
-            <p> @teams[i].Name </p>
+            <p> @teams[i].TeamName </p>
         </div>
     }
 
@@ -91,46 +90,6 @@
 }
 
 <style>
-    .search-dropdown a {
-        text-decoration: none !important;
-        /* remove underline */
-        color: inherit;
-        /* keep text color */
-        display: flex;
-        /* match your .search-item layout */
-        align-items: center;
-        gap: 10px;
-        padding: 5px;
-    }
-
-    .search-dropdown a:hover {
-        background-color: #f0f0f0;
-        /* optional hover effect */
-    }
-
-    .search {
-        position: relative;
-    }
-
-    .search-dropdown {
-        position: absolute;
-        top: 40px;
-        width: 100%;
-        background: white;
-        border: 1px solid #ccc;
-        z-index: 1000;
-    }
-
-    .search-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 5px;
-    }
-
-    .search-item img {
-        width: 30px;
-    }
 
     .teams-container {
         display: grid;
@@ -210,9 +169,6 @@
         align-items: center;
         gap: 25px;
     }
-
-
-
 
     .team {
         font-size: 18px;

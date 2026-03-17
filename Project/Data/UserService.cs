@@ -75,5 +75,12 @@ namespace Project.Data
 
             return DbHelper.RunSelect<PlayerPage>(sql, id);
         }
+
+        public List<Player> GetTeamMates(int teamId, int id)
+        {
+            string sql = "SELECT * FROM Players WHERE TeamId = {} AND Id != {}";
+
+            return DbHelper.RunSelect<Player>(sql, teamId, id);
+        }
     }
 }

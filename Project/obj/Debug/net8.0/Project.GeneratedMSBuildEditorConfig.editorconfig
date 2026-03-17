@@ -38,8 +38,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9NZW51LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/itamar/Desktop/HTML/nbastats/Project/Components/Pages/PlayerPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9QbGF5ZXJQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/itamar/Desktop/HTML/nbastats/Project/Components/Pages/Players.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9QbGF5ZXJzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/itamar/Desktop/HTML/nbastats/Project/Components/Pages/TeamsPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9UZWFtc1BhZ2UucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/itamar/Desktop/HTML/nbastats/Project/Components/Pages/TopBar.razor]

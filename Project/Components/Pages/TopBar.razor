@@ -1,5 +1,6 @@
 @using Project.Data
 @inject UserService UserService
+@inject NavigationManager Nav
 
 <div class="topbar">
 
@@ -17,30 +18,28 @@
         {
             <div class="search-dropdown">
 
-                @for (int i = 0; i < result.Count; i++)
+                @foreach (var item in result)
                 {
 
-                    @if (result[i].IsPlayer)
+                    @if (item.IsPlayer)
                     {
-                        <a href="player/@result[i].Id">
-                            <div class="search-item">
+                        <div class="search-item" @onclick="(() => GoToPlayer(item.Id))">
 
-                                <img src="@result[i].ImageUrl" />
-                                <p> @result[i].Name </p>
+                            <img src="@item.ImageUrl" />
+                            <p> @item.Name </p>
 
-                            </div>
-                        </a>
+                        </div>
                     }
                     else
                     {
-                        <a href="team/@result[i].Id">
-                            <div class="search-item">
 
-                                <img src="@result[i].ImageUrl" />
-                                <p> @result[i].Name </p>
+                        <div class="search-item" @onclick="(() => GoToTeam(item.Id))">
 
-                            </div>
-                        </a>
+                            <img src="@item.ImageUrl" />
+                            <p> @item.Name </p>
+
+                        </div>
+
                     }
 
                 }
@@ -79,6 +78,21 @@
         Console.WriteLine($"Search for '{search}' returned {result.Count} results");
     }
 
+    void GoToPlayer(int id)
+    {
+        result.Clear();
+        search = "";
+
+        Nav.NavigateTo($"/player/{id}");
+    }
+
+    void GoToTeam(int id)
+    {
+        result.Clear();
+        search = "";
+
+        Nav.NavigateTo($"/team/{id}");
+    }
     void Login()
     {
 
@@ -91,6 +105,33 @@
 }
 
 <style>
+    .search-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px;
+        cursor: pointer;
+        /* 👈 shows hand */
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .search-item:hover {
+        background-color: #e9ecef;
+        /* 👈 light hover */
+        transform: scale(1.02);
+        /* 👈 tiny zoom */
+    }
+
+    .search-item img {
+        width: 35px;
+        height: 35px;
+        object-fit: cover;
+    }
+
+    .search-item p {
+        margin: 0;
+    }
+
     /* --- Top Bar --- */
     .topbar {
         display: flex;
@@ -136,5 +177,4 @@
         display: flex;
         gap: 5px;
     }
-
 </style>
