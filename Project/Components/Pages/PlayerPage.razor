@@ -2,6 +2,7 @@
 @using Project.Data
 @using System.Diagnostics.Eventing.Reader
 @inject UserService UserService
+@inject NavigationManager Nav
 
 
 @if (Player != null && Player.Count > 0)
@@ -50,7 +51,7 @@
 
     @foreach (var players in teamMates)
     {
-        <div class="player-card">
+        <div class="player-card" @onclick="(() => GoToPlayer(players.Id))">
 
             <div class="player-head">
                 <img src="@players.ImageUrl" class="player-img">
@@ -85,9 +86,32 @@
         Player = UserService.GetPlayerPageById(Id);
         teamMates = UserService.GetTeamMates(Player[0].TeamId, Id);
     }
+
+    protected override void OnParametersSet()
+    {
+        LoadPlayer();
+    }
+
+    private void LoadPlayer()
+    {
+        Player = UserService.GetPlayerPageById(Id);
+        teamMates = UserService.GetTeamMates(Player[0].TeamId, Id);
+    }
+
+    void GoToPlayer(int id)
+    {
+        Nav.NavigateTo($"/player/{id}");
+    }
 }
 
 <style>
+
+    .player-card:hover {
+        background-color: #e9ecef; /* light gray on hover */
+        transform: scale(1.02); /* tiny zoom effect */
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
     .player-page {
         max-width: 900px;
         margin: 40px auto;

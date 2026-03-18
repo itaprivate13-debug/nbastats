@@ -2,6 +2,7 @@
 @using Project.Data
 @using System.Diagnostics.Eventing.Reader
 @inject UserService UserService
+@inject NavigationManager Nav
 
 <PageTitle>Home</PageTitle>
 
@@ -13,23 +14,23 @@
 
 <div class="players-container">
 
-    @for (int i = 0; i < players.Count; i++)
+    @foreach (var players in players)
     {
-        <div class="player-card">
+        <div class="player-card" @onclick="(() => GoToPlayer(players.Id))">
 
             <div class="player-header">
-                <img src="@players[i].ImageUrl" class="player-img">
+                <img src="@players.ImageUrl" class="player-img">
 
                 <div class="player-text">
-                    <h2>@players[i].Name</h2>
-                    <p class="team">@players[i].TeamName</p>
+                    <h2>@players.Name</h2>
+                    <p class="team">@players.TeamName</p>
                 </div>
             </div>
 
             <div class="player-stats">
-                <p>Points Per Game: @players[i].PPG</p>
-                <p>Assist Per Game: @players[i].APG</p>
-                <p>Rebounds Per Game: @players[i].RPG</p>
+                <p>Points Per Game: @players.PPG</p>
+                <p>Assist Per Game: @players.APG</p>
+                <p>Rebounds Per Game: @players.RPG</p>
             </div>
 
         </div>
@@ -70,12 +71,18 @@
         Console.WriteLine($"Loaded {teams.Count} teams");
     }
 
-
     void DoSearch()
     {
         result = UserService.Search(search);
 
         Console.WriteLine($"Search for '{search}' returned {result.Count} results");
+    }
+
+    void GoToPlayer(int id)
+    {
+        result.Clear();
+        search = "";
+        Nav.NavigateTo($"/player/{id}");
     }
 
     void Login()
@@ -147,6 +154,12 @@
         padding: 15px;
         /* smaller padding */
         margin: 0;
+    }
+
+    .player-card:hover {
+        background-color: #e9ecef; /* light gray on hover */
+        transform: scale(1.02); /* tiny zoom effect */
+        transition: background-color 0.2s ease, transform 0.1s ease;
     }
 
     .player-img {

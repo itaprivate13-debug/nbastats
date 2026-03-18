@@ -76,11 +76,42 @@ namespace Project.Data
             return DbHelper.RunSelect<PlayerPage>(sql, id);
         }
 
+        public List<TeamPage> GetTeamPageById(int id)
+        {
+            string sql = @"SELECT Teams.Id, Teams.TeamName, Teams.LogoUrl, TeamInfo.Conference, TeamInfo.ShortName, TeamInfo.Arena, TeamInfo.Coach
+                            FROM TeamInfo
+                            JOIN Teams ON TeamInfo.TeamId = Teams.Id
+                            WHERE Teams.Id = {};";
+
+            return DbHelper.RunSelect<TeamPage>(sql, id);
+        }
+
         public List<Player> GetTeamMates(int teamId, int id)
         {
             string sql = "SELECT * FROM Players WHERE TeamId = {} AND Id != {}";
 
             return DbHelper.RunSelect<Player>(sql, teamId, id);
+        }
+
+        public List<Player> SortByPPG(List<Player> Players)
+        {
+            string sql = "SELECT * FROM Players ORDER BY PPG DESC;";
+
+            return DbHelper.RunSelect<Player>(sql);
+        }
+
+        public List<Player> SortByAPG(List<Player> Players)
+        {
+            string sql = "SELECT * FROM Players ORDER BY APG DESC;";
+
+            return DbHelper.RunSelect<Player>(sql);
+        }
+
+        public List<Player> SortByRPG(List<Player> Players)
+        {
+            string sql = "SELECT * FROM Players ORDER BY RPG DESC;";
+
+            return DbHelper.RunSelect<Player>(sql);
         }
     }
 }

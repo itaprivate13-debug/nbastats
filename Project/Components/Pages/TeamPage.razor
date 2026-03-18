@@ -1,0 +1,55 @@
+﻿@page "/team/{Id:int}"
+@using Project.Data
+@using System.Diagnostics.Eventing.Reader
+@inject UserService UserService
+@inject NavigationManager Nav
+
+
+@if (Player != null && Player.Count > 0)
+{
+    <div class="player-page">
+        <div class="player-header">
+
+            <img class="player-photo" src="@Player[0].ImageUrl" />
+
+            <div class="player-text">
+                <h1> @Player[0].Name </h1>
+
+                <p> @Player[0].Name </p>
+                <p> @Player[0].Position </p>
+            </div>
+
+            <img class="team-photo" src="@Player[0].LogoUrl" />
+
+        </div>
+
+        <div class="player-stats">
+
+            <p> Points Per Game: @Player[0].PPG </p>
+            <p> Asists Per Game: @Player[0].APG </p>
+            <p> Rebounds Per Game: @Player[0].RPG </p>
+
+        </div>
+
+        <div class="player-info">
+
+            <p> Height: @Player[0].Height </p>
+            <p> Weight: @Player[0].Weight </p>
+            <p> Draft Year: @Player[0].DraftYear </p>
+            <p> Draft Pick: @Player[0].DraftPick </p>
+
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private List<TeamPage> Team = new List<TeamPage>();
+
+    protected override void OnInitialized()
+    {
+        Team = UserService.GetTeamPageById(Id);
+    }
+}

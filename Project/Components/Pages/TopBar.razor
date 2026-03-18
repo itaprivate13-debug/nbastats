@@ -11,42 +11,51 @@
 
     <div class="search">
 
-        <input @bind="search" type="text" placeholder="Search for a Player or a Team... " />
+        <div class="search-box">
+            <input @bind="search" type="text" placeholder="Search for a Player or a Team... " />
+
+            @if (result.Count > 0)
+            {
+                <div class="search-dropdown">
+
+                    @foreach (var item in result)
+                    {
+
+                        @if (item.IsPlayer)
+                        {
+                            <div class="search-item" @onclick="(() => GoToPlayer(item.Id))">
+
+                                <img src="@item.ImageUrl" />
+                                <p> @item.Name </p>
+
+                            </div>
+                        }
+                        else
+                        {
+
+                            <div class="search-item" @onclick="(() => GoToTeam(item.Id))">
+
+                                <img src="@item.ImageUrl" />
+                                <p> @item.Name </p>
+
+                            </div>
+
+                        }
+
+                    }
+
+                </div>
+
+            }
+
+
+        </div>
+
         <button class="btn btn-primary" @onclick="DoSearch"> Search </button>
 
-        @if (result.Count > 0)
-        {
-            <div class="search-dropdown">
 
-                @foreach (var item in result)
-                {
 
-                    @if (item.IsPlayer)
-                    {
-                        <div class="search-item" @onclick="(() => GoToPlayer(item.Id))">
-
-                            <img src="@item.ImageUrl" />
-                            <p> @item.Name </p>
-
-                        </div>
-                    }
-                    else
-                    {
-
-                        <div class="search-item" @onclick="(() => GoToTeam(item.Id))">
-
-                            <img src="@item.ImageUrl" />
-                            <p> @item.Name </p>
-
-                        </div>
-
-                    }
-
-                }
-
-            </div>
-
-        }
+        
         @if (result.Count == 0 && search != "")
         {
             <div class="search-dropdown">
@@ -155,6 +164,26 @@
         height: 30px;
     }
 
+    .search-box {
+        position: relative;
+        flex: 1;
+    }
+
+    .search-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        border: 1px solid #ccc;
+        z-index: 1000;
+    }
+
+    .topbar .sign {
+        display: flex;
+        gap: 5px;
+    }
+
     .topbar .search {
         display: flex;
         flex: 1;
@@ -163,18 +192,9 @@
         max-width: 500px;
     }
 
-    .topbar .search input {
-        flex: 1;
+    .search-box input {
+        width: 100%;
         padding: 6px 10px;
         font-size: 16px;
-    }
-
-    .topbar .search button {
-        white-space: nowrap;
-    }
-
-    .topbar .sign {
-        display: flex;
-        gap: 5px;
     }
 </style>

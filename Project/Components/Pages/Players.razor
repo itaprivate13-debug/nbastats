@@ -2,30 +2,44 @@
 @using Project.Data
 @using System.Diagnostics.Eventing.Reader
 @inject UserService UserService
+@inject NavigationManager Nav
 
-<h1> All NBA Players: </h1>
+<div class="header-container">
+
+    <h1> All NBA Players: </h1>
+
+    <div class="sort-bar">
+
+        <p> Sort By: </p>
+        <button class="btn btn-secondary" @onclick="(() => SortByPPG())"> PPG </button>
+        <button class="btn btn-secondary" @onclick="(() => SortByAPG())"> APG </button>
+        <button class="btn btn-secondary" @onclick="(() => SortByRPG())"> RPG </button>
+    </div>
+
+</div>
+
 
 <hr />
 
 <div class="players-container">
 
-    @for (int i = 0; i < players.Count; i++)
+    @foreach (var players in players)
     {
-        <div class="player-card">
+        <div class="player-card" @onclick="(() => GoToPlayer(players.Id))">
 
             <div class="player-header">
-                <img src="@players[i].ImageUrl" class="player-img">
+                <img src="@players.ImageUrl" class="player-img">
 
                 <div class="player-text">
-                    <h2>@players[i].Name</h2>
-                    <p class="team">@players[i].TeamName</p>
+                    <h2>@players.Name</h2>
+                    <p class="team">@players.TeamName</p>
                 </div>
             </div>
 
             <div class="player-stats">
-                <p>Points Per Game: @players[i].PPG</p>
-                <p>Assist Per Game: @players[i].APG</p>
-                <p>Rebounds Per Game: @players[i].RPG</p>
+                <p>Points Per Game: @players.PPG</p>
+                <p>Assist Per Game: @players.APG</p>
+                <p>Rebounds Per Game: @players.RPG</p>
             </div>
 
         </div>
@@ -39,9 +53,57 @@
     {
         players = UserService.GetAllPlayers();
     }
+
+    void GoToPlayer(int id)
+    {
+        Nav.NavigateTo($"/player/{id}");
+    }
+
+    void SortByPPG()
+    {
+        players = UserService.SortByPPG(players);
+    }
+
+    void SortByAPG()
+    {
+        players = UserService.SortByAPG(players);
+    }
+
+    void SortByRPG()
+    {
+        players = UserService.SortByRPG(players);
+    }
 }
 
 <style>
+
+    .player-card:hover {
+        background-color: #e9ecef; /* light gray on hover */
+        transform: scale(1.02); /* tiny zoom effect */
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .header-container {
+        display: flex;
+        align-items: center;
+        gap: 20px; /* space between h1 and sort buttons */
+        flex-wrap: wrap; /* optional, allows wrapping on small screens */
+    }
+
+        .header-container h1 {
+            margin: 0;
+        }
+
+    .sort-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .sort-bar p {
+            margin: 0;
+        }
+
     .players-container {
         display: flex;
         flex-wrap: wrap;
@@ -82,4 +144,5 @@
         align-items: center;
         gap: 25px;
     }
+
 </style>
